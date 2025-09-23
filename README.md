@@ -25,11 +25,15 @@
 
 ├── Hypothesis
       
-            * **Who causes risk?** Cars (53%), Public Transport (11%), Pickup (10%), Motorcycles (7%), Taxis (6%).
-            * **Who is most affected?** Motorcyclists (42%), Pedestrians (17%), Cyclists (16%).
-            * **Trends:** Histogram unclear; KDE suggests decline toward 2023.
-            * **Correlations:** No strong relationship between victims, commune, or victim type.
+            * Who causes risk? Cars (53%), Public Transport (11%), Pickup (10%), Motorcycles (7%), Taxis (6%).
+            * Who is most affected? Motorcyclists (42%), Pedestrians (17%), Cyclists (16%).
+            * Trends: Histogram unclear; KDE suggests risk decline toward 2023.
+            * Correlations: No strong relationship between victims, commune, or victim type.
   
 └── Results
 
             └── Business Recommendation
+            * Target Car Drivers with stricter policies.  
+            * Protect Motorcyclists & Pedestrians with infrastructure & safety programs.  
+            * Focus resources on High-Risk Areas.  
+            * Track KPIs.
