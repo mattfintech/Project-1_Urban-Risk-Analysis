@@ -1,73 +1,35 @@
 # Project 1 **Urban Risk Analysis**
 
-
 ├── Business Problem
 
-            ├── Context
-            └── Defining, Solving, Improving
-
+            ├── Context → Urban areas face daily risks, and government agencies need data-driven insights to allocate resources and reduce them.
+            ├── Defining → How can I reduce urban risk?
+            └── Solving → ETL to clean and unify data, EDA to uncover patterns, Visualizations to identify hotspots.
+            
 ├── Data Pipeline
 
             ├── ETL (Extract Transform Load)
 
-                        ├── Data Collection (Extract) — raw data into a tabular dataset:
+                        ├── Data Collection (Extract)
 
-                            ├── (Internal) Business Databases - from the company (mostly structured).
-                            ├── (External) API Requests - from online APIs in JSON/CSV (unstructured).
-                            └── (External) Web Scraping - from websites in HTML (unstructured).
+                            └── (Internal) Business Databases
 
-                        ├── Data Wrangling (Transform) - tabular dataset into a clean, standardized, labeled structure.
-
-                            ├── Familiarization — understand dataset.
-                                ├── Dataset Exploration
-                                ├── Dataset Glossary — define features' meanings.
-                                └── Descriptive Statistics
-                                    ├── Continuous Variables — numeric columns.
-                                    └── Categorical Variables — non-numeric columns.
-
-                            ├── Identifying → Correcting - detect and fix issues, skewed distributions.
-                                ├── Bias in Data Collection — check class imbalances.
-                                ├── Incomplete Data - handle missing values.
-                                ├── Merging Datasets - join external complimentary data.
-                                └── Formatting Datasets - normalize datatypes and formats.
-                            
-                            └── Training Labels — convert verbose into binary target.
-
+                        ├── Data Wrangling (Transform)
                         └── Load - transformed dataset.
 
-            └── EDA (Exploratory Data Analysis) - analyzed patterns between features and targets.
-
-                        ├── Plot - visualize relationships between features and targets.
-                        ├── Features Engineering - prepare dataset for modeling.
-                        └── SQL - run structured queries on the Dataset for exploration and validation.
+            └── EDA (Exploratory Data Analysis) → Identified main causers and victims of Urban Risk.
 
 ├── Data Visualization
 
+            └── Histograms, KDE, Scatter plots, Heatmaps.
+
 ├── Hypothesis
       
-            └── Hypothesis Testing
+            * **Who causes risk?** Cars (53%), Public Transport (11%), Pickup (10%), Motorcycles (7%), Taxis (6%).
+            * **Who is most affected?** Motorcyclists (42%), Pedestrians (17%), Cyclists (16%).
+            * **Trends:** Histogram unclear; KDE suggests decline toward 2023.
+            * **Correlations:** No strong relationship between victims, commune, or victim type.
   
-├── Analysis
-            
-            └── Machine Learning
-
-                ├── Supervised Learning            
-                          ├── Linear Regression
-                          ├── Stratified Analysis
-                          ├── Interaction Terms
-                          ├── Time Series Forecasting
-                          ├── Logistic Regression
-                          └── Advanced Learning
-                                ├── CART
-                                      └── Random Forest
-                                ├── LASSO
-                                └── Neural Networks
-
-                └── Model Evaluating
-                            ├── Confusion Matrix
-                            ├── Accuracy / Precision / Recall / F1
-                            └── Log Loss
-
 └── Results
 
             └── Business Recommendation
