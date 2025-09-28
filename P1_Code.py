@@ -188,8 +188,6 @@ porcentajes_comuna
 
 # COnsiderar cada fila como un accidente vial y separapr por horas para saber en qué horario suceden más accidentes
 
-import numpy as np
-
 # Convierte la columna 'HORA' a formato de fecha y hora, ignorando los valores 'SD'
 siniestros_viales = homicidios[homicidios['HORA'] != 'SD'] # != (desigual): ignorar datos 'SD'
 siniestros_viales['HORA'] = pd.to_datetime(homicidios['HORA'], errors='coerce') # errors='coerce' forzar errores
