@@ -1,0 +1,88 @@
+# 1. **BUSINESS PROBLEM**
+
+## 1. 1. **Context**
+* Urban areas face daily risks, and government agencies need data-driven insights to allocate resources and reduce them.
+
+## 1. 2. **Defining**
+* How can I reduce urban risk?
+
+## 1. 3. **Solving**
+* ETL to clean and unify data, EDA to uncover patterns, Visualizations to identify hotspots.
+
+# 2. **DATA PIPELINE**
+
+## 2. 1. **ETL**
+
+'1. Import Required Libraries'
+
+import pandas as pd
+import numpy as np
+
+'2. Import Dataset'
+
+from google.colab import files
+uploaded = files.upload()
+
+from google.colab import files
+uploaded = files.upload()
+
+'3. Load Dataset'
+
+homicidios = pd.read_excel('homicides.xlsx')
+lesiones = pd.read_excel('injuries.xlsx')
+homicidios.info()
+lesiones.info()
+
+'4. Clean Data'
+
+# Add a new first column called `TIPO_ACCIDENTE` to the `lesiones` DataFrame, filling every row with "Lesiones"; to tag the dataset so when merged with homicidios, distinguish accident types.
+lesiones.insert(0, 'TIPO_ACCIDENTE', 'Lesiones')
+lesiones.head()
+
+# Add a new first column called `TIPO_ACCIDENTE` to the `homicidios` DataFrame, filling every row with "Homicidios"; to tag the dataset so when merged with lesiones, distinguish accident types.
+homicidios.insert(0, 'TIPO_ACCIDENTE', 'Homicidios')
+homicidios.head()
+
+# Standardize (convert) `FECHA` column to datetime format: in both DataFrames (otherwise they’d be strings).
+lesiones['FECHA'] = pd.to_datetime(lesiones['FECHA'])
+homicidios['FECHA'] = pd.to_datetime(homicidios['FECHA'])
+
+# Concatenate (combine) DataFrames: (`lesiones` + `homicidios`) into one called `accidentes_viales`.
+accidentes_viales = pd.concat([lesiones, homicidios], ignore_index=True)   # `ignore_index=True` resets the row numbering so you don’t get duplicate indices.
+
+# Sort by `FECHA` column (oldest → newest).
+accidentes_viales = accidentes_viales.sort_values(by='FECHA')
+
+# Display
+accidentes_viales
+
+# Review what columns are available after merging/cleaning, to decide which are relevant for analysis.
+columnas = accidentes_viales.columns
+columnas
+
+'Spot incomplete or irrelevant columns to drop or fix'
+
+# Count Nulls (Missing Values)
+accidentes_viales.isnull().sum()
+
+# Percentage of nulls
+null_percentage = (null_counts / len(accidentes_viales)) * 100
+
+# Combine into one DataFrame for clarity
+missing_data = pd.DataFrame({
+    'Null Count': null_counts,
+    'Null Percentage': null_percentage.round(2)  # round to 2 decimals
+})
+missing_data
+
+# Remove Useless Columns
+cols_drop = ['ID','OTRA DIRECCION','CALLE','ALTURA','CRUCE']
+accidentes_viales = accidentes_viales.drop(columns=cols_drop, errors='ignore')
+accidentes_viales
+
+# Check what type of data each column has (numeric, text, date), to decide what cleaning and converted is needed 
+accidentes_viales.info()
+
+## 2. 2. **EDA**
+
+
