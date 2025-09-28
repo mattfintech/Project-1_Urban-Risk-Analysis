@@ -223,3 +223,63 @@ conteo_horas['HORA_redondeada'] = conteo_horas['HORA_redondeada'].dt.time
 conteo_horas['NumAccidentes'].plot(kind='line', figsize=(8, 4), title='Accidentes por Franja Horaria')
 
 plt.show()
+
+# COnsiderar cada fila como un accidente vial y separapr por Comuna y Hora para saber en qué horario suceden más accidentes
+
+# Filtra las filas que no contienen 'SD' en la columna 'HORA'
+siniestros_viales = homicidios[homicidios['HORA'] != 'SD']
+
+# Convierte la columna 'HORA' a tipo datetime
+siniestros_viales['HORA'] = pd.to_datetime(homicidios['HORA'], errors='coerce')
+
+# Redondea las horas al múltiplo de 2 más cercano
+siniestros_viales['HORA_redondeada'] = (siniestros_viales['HORA'] + pd.to_timedelta(1, 'h')).dt.floor('6h')
+
+# Filtra las filas que no contienen 'SD' en la columna 'HORA_redondeada'
+siniestros_viales = siniestros_viales[siniestros_viales['HORA_redondeada'].notna()]
+
+# Cuenta el número de accidentes por intervalo de 2 horas
+conteo_accidentes = siniestros_viales.groupby(['COMUNA', 'HORA_redondeada']).size().reset_index(name='NumAccidentes')
+
+# Ordena por 'NumAccidentes' de mayor a menor
+conteo_accidentes = conteo_accidentes.sort_values(by='NumAccidentes', ascending=False)
+
+# Muestra el DataFrame resultante
+conteo_accidentes
+
+# 4. **HYPOTHESIS**
+
+**EDA**
+
+1. Risk Causers: Cars (≈53%) are the main source of accidents; public transport, pickups, motorcycles, and taxis follow.
+
+2. Most Affected: Motorcyclists (≈42%) are most vulnerable, followed by pedestrians, cyclists, car occupants, and public transport users.
+
+**Visualizations**
+
+1. Histogram: No clear time trend in homicides/injuries.
+
+2. KDE: Suggests a decline toward 2023.
+
+3. Heatmap: No strong correlation between victims, commune, or victim type codes.
+
+# 5. **RESULTS**
+
+**Business Problem**
+  - How can I reduce urban risk?
+
+**Business Recommendation**
+
+1. Target the biggest risk causers (Cars, ≈53%).
+  * Stricter speed monitoring, awareness campaigns, and traffic law enforcement for private cars.
+
+2. Protect the most affected (Motorcyclists, ≈42%).
+  * Enforce helmet use, create safe lanes, and increase rider safety training.
+
+3. Urban infrastructure & zoning
+  * High-risk zones need improved lighting, signage, and redesign to reduce accidents.
+
+4. Policy & planning
+  * Focus resources on the top 2–3 victim groups (motorcyclists, pedestrians, cyclists).
+
+5. Continuous monitoring (track KPIs).
