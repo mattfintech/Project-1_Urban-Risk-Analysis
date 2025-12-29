@@ -1,36 +1,79 @@
-# Project 1 **Mitigate Road Accidents**
+# 1. **BUSINESS PROBLEM**
 
-├── Problem (Business Problem)
+## 1. 1. **Context**
+* Urban areas face daily risks, and government agencies need data-driven insights to allocate resources and reduce them.
 
-            ├── Context → Urban areas face daily risks, and government agencies need data-driven insights to allocate resources and reduce them.
-            └── Defining → How to Mitigate Road Accidents in Buenos Aires? 
-            
-├── Data Pipeline
+## 1. 2. **Defining**
+* How to Mitigate Road Accidents in Buenos Aires?
 
-            └── ETL (Extract Transform Load)
+# 2. **DATA PIPELINE**
 
-                        ├── Data Collection (Extract)
+## 2. 1. **ETL**
 
-                            └── Internal → Public government datasets.
+### 2. 1. 1. **Data Collection**
 
-                        ├── Data Wrangling (Transform)
-                        └── Load - transformed dataset.
+'1. Importing Libraries'
 
-├── Data Visualization
+import pandas as pd
+import numpy as np
 
-            └── EDA (Exploratory Data Analysis) → Histograms, KDE, Scatter Plots, Heatmaps, Pie Chart.
+'2. Importing Dataset' # (Uploading) from Desktop to Colab.
 
-├── Hypothesis
-      
-            * Who causes risk? Cars (53%), Public Transport (11%), Pickup (10%), Motorcycles (7%), Taxis (6%).
-            * Who is most affected? Motorcyclists (42%), Pedestrians (17%), Cyclists (16%).
-            * Trends: Histogram quite unclear; KDE suggests risk decline toward 2023.
-            * Correlations: No strong relationship between victims, commune, or victim type.
-  
-└── Solution (Results)
+from google.colab import files
+uploaded = files.upload()
 
-            └── Recommendation (Business Recommendation)
-                        
-                        1. Target the Perpetrators → Cars ≈53%: Strengthen speed tickets, Launch awareness campaigns, Intensify traffic law enforcement.
-                        2. Protect the Victims → Motorcyclists ≈42%: Enforce helmet compliance, Create dedicated safe lanes, Expand rider safety training.
-                        3. Monitor Continuously → KPIs and update interventions accordingly.
+'3. Loading Dataset'
+
+' 3. 1. Load Dataset "homicides" '
+
+homicides = pd.read_excel('homicides.xlsx')
+
+'3. 1. 1. Show DataFrame "homicides" Summary' # to know what to Transform.
+
+homicides.info()
+
+' 3. 2. Load Dataset "injuries" '
+
+injuries = pd.read_excel('injuries.xlsx')
+
+'3. 2. 1. Show DataFrame "injuries" Summary' # to know what to Transform.
+
+injuries.info()
+
+### 2. 1. 2. **Data Wrangling**
+
+'5. Cleaning Data'
+
+' 5. 1. Insert Identifying Column "TIPO_ACCIDENTE", to DataFrame "homicides" '  # to label and distinguish datasets.
+
+# In dataframe `homicidios`, add at position `0`, a new column `TIPO_ACCIDENTE`, label it `Homicidios` to identify the dataset.
+homicides.insert(0, 'TIPO_ACCIDENTE', 'Homicidios')
+
+# Display
+homicides.head()
+
+' 5. 2. Style Column Names, of Dataframe "homicides" '
+
+# Rename "TIPO_ACCIDENTE" → "Tipo Accidente"
+homicides.rename(columns={"TIPO_ACCIDENTE": "Tipo Accidente"}, inplace=True)
+
+# Rename "Nº VICTIMAS" → "Nº Víctimas"
+homicides.rename(columns={"Nº VICTIMAS": "Nº Víctimas"}, inplace=True)
+
+# Capitalize all UPPERCASE column names
+homicides.columns = [
+    col.replace("_", " ").title() if col.isupper() else col
+    for col in homicides.columns
+]
+
+# Display
+homicides.head()
+
+' 5. 3. Insert Identifying Column "TIPO_ACCIDENTE", to DataFrame "injuries" '  # to label and distinguish datasets.
+
+# In DataFrame `lesiones`, add at position `0`, a new column `TIPO_ACCIDENTE`, label it `Lesiones` to identify the dataset.
+injuries.insert(0, 'TIPO_ACCIDENTE', 'Lesiones')
+# Display
+injuries.head()
+
+
