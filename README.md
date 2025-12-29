@@ -1,40 +1,36 @@
-# Project 1 **Urban Risk Analysis**
+# Project 1 **Mitigate Road Accidents**
 
-├── Business Problem
+├── Problem (Business Problem)
 
             ├── Context → Urban areas face daily risks, and government agencies need data-driven insights to allocate resources and reduce them.
-            ├── Defining → How can I reduce urban risk?
-            └── Solving → ETL to clean and unify data, EDA to uncover patterns, Visualizations to identify hotspots.
+            └── Defining → How to Mitigate Road Accidents in Buenos Aires? 
             
 ├── Data Pipeline
 
-            ├── ETL (Extract Transform Load)
+            └── ETL (Extract Transform Load)
 
                         ├── Data Collection (Extract)
 
-                            └── (Internal) Business Databases
+                            └── Internal → Public government datasets.
 
                         ├── Data Wrangling (Transform)
                         └── Load - transformed dataset.
 
-            └── EDA (Exploratory Data Analysis) → Identified main causers and victims of Urban Risk.
-
 ├── Data Visualization
 
-            └── Histograms, KDE, Scatter plots, Heatmaps.
+            └── EDA (Exploratory Data Analysis) → Histograms, KDE, Scatter Plots, Heatmaps, Pie Chart.
 
 ├── Hypothesis
       
             * Who causes risk? Cars (53%), Public Transport (11%), Pickup (10%), Motorcycles (7%), Taxis (6%).
             * Who is most affected? Motorcyclists (42%), Pedestrians (17%), Cyclists (16%).
-            * Trends: Histogram unclear; KDE suggests risk decline toward 2023.
+            * Trends: Histogram quite unclear; KDE suggests risk decline toward 2023.
             * Correlations: No strong relationship between victims, commune, or victim type.
   
-└── Results
+└── Solution (Results)
 
-            └── Business Recommendation
+            └── Recommendation (Business Recommendation)
                         
-                        * Target Car Drivers with stricter policies.  
-                        * Protect Motorcyclists & Pedestrians with infrastructure & safety programs.  
-                        * Focus resources on High-Risk Areas.  
-                        * Track KPIs.
+                        1. Target the Perpetrators → Cars ≈53%: Strengthen speed tickets, Launch awareness campaigns, Intensify traffic law enforcement.
+                        2. Protect the Victims → Motorcyclists ≈42%: Enforce helmet compliance, Create dedicated safe lanes, Expand rider safety training.
+                        3. Monitor Continuously → KPIs and update interventions accordingly.
