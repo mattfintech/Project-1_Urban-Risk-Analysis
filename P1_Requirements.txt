@@ -1,5 +1,6 @@
+Google Colab
 Nandas
 Numpy
-Colab
 Matplotlib
+Matplotlib.font_manager
 Seaborn
