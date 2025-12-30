@@ -4,280 +4,390 @@
 * Urban areas face daily risks, and government agencies need data-driven insights to allocate resources and reduce them.
 
 ## 1. 2. **Defining**
-* How can I reduce urban risk?
-
-## 1. 3. **Solving**
-* ETL to clean and unify data, EDA to uncover patterns, Visualizations to identify hotspots.
+* How to Mitigate Road Accidents in Buenos Aires?
 
 # 2. **DATA PIPELINE**
 
 ## 2. 1. **ETL**
 
-'1. Import Required Libraries'
+### 2. 1. 1. **Data Collection**
+
+'1. Importing Libraries'
 
 import pandas as pd
 import numpy as np
 
-'2. Import Dataset'
+'2. Importing Dataset' # (Uploading) from Desktop to Colab.
 
-# `homicides`
 from google.colab import files
 uploaded = files.upload()
 
-# injuries
-from google.colab import files
-uploaded = files.upload()
+'3. Loading Dataset'
 
-'3. Load Dataset'
+' 3. 1. Load Dataset "homicides" '
 
-homicidios = pd.read_excel('homicides.xlsx')
-lesiones = pd.read_excel('injuries.xlsx')
+homicides = pd.read_excel('homicides.xlsx')
 
-# Display
-homicidios.info()
+'3. 1. 1. Show DataFrame "homicides" Summary' # to know what to Transform.
 
-# Display
-lesiones.info()
+homicides.info()
 
-'4. Clean Data'
+' 3. 2. Load Dataset "injuries" '
 
-# Add a new first column called `TIPO_ACCIDENTE` to the `lesiones` DataFrame, filling every row with "Lesiones"; to tag the dataset so when merged with homicidios, distinguish accident types.
-lesiones.insert(0, 'TIPO_ACCIDENTE', 'Lesiones')
-lesiones.head()
+injuries = pd.read_excel('injuries.xlsx')
 
-# Add a new first column called `TIPO_ACCIDENTE` to the `homicidios` DataFrame, filling every row with "Homicidios"; to tag the dataset so when merged with lesiones, distinguish accident types.
-homicidios.insert(0, 'TIPO_ACCIDENTE', 'Homicidios')
-homicidios.head()
+'3. 2. 1. Show DataFrame "injuries" Summary' # to know what to Transform.
 
-# Standardize (convert) `FECHA` column to datetime format: in both DataFrames (otherwise they’d be strings).
-lesiones['FECHA'] = pd.to_datetime(lesiones['FECHA'])
-homicidios['FECHA'] = pd.to_datetime(homicidios['FECHA'])
+injuries.info()
 
-# Concatenate (combine) DataFrames: (`lesiones` + `homicidios`) into one called `accidentes_viales`.
-accidentes_viales = pd.concat([lesiones, homicidios], ignore_index=True)   # `ignore_index=True` resets the row numbering so you don’t get duplicate indices.
+### 2. 1. 2. **Data Wrangling**
 
-# Sort by `FECHA` column (oldest → newest).
-accidentes_viales = accidentes_viales.sort_values(by='FECHA')
+'5. Cleaning Data'
 
-# Display
-accidentes_viales
+' 5. 1. Insert Identifying Column "TIPO_ACCIDENTE", to DataFrame "homicides" '  # to label and distinguish datasets.
 
-# Review what columns are available after merging/cleaning, to decide which are relevant for analysis.
-columnas = accidentes_viales.columns
-columnas
+#In dataframe `homicidios`, add at position `0`, a new column `TIPO_ACCIDENTE`, label it `Homicidios` to identify the dataset.
 
-'Spot incomplete or irrelevant columns to drop or fix'
+homicides.insert(0, 'TIPO_ACCIDENTE', 'Homicidios')
 
-# Count Nulls (Missing Values)
-accidentes_viales.isnull().sum()
+#Display
 
-# Percentage of nulls
-null_percentage = (null_counts / len(accidentes_viales)) * 100
+homicides.head()
 
-# Combine into one DataFrame for clarity
+' 5. 2. Style Column Names, of Dataframe "homicides" '
+
+#Rename "TIPO_ACCIDENTE" → "Tipo Accidente"
+
+homicides.rename(columns={"TIPO_ACCIDENTE": "Tipo Accidente"}, inplace=True)
+
+#Rename "Nº VICTIMAS" → "Nº Víctimas"
+
+homicides.rename(columns={"Nº VICTIMAS": "Nº Víctimas"}, inplace=True)
+
+#Capitalize all UPPERCASE column names
+
+homicides.columns = [
+    col.replace("_", " ").title() if col.isupper() else col
+    for col in homicides.columns
+]
+
+#Display
+
+homicides.head()
+
+' 5. 3. Insert Identifying Column "TIPO_ACCIDENTE", to DataFrame "injuries" '  # to label and distinguish datasets.
+
+#In DataFrame `lesiones`, add at position `0`, a new column `TIPO_ACCIDENTE`, label it `Lesiones` to identify the dataset.
+
+injuries.insert(0, 'TIPO_ACCIDENTE', 'Lesiones')
+
+#Display
+
+injuries.head()
+
+' 5. 3. Insert Identifying Column "TIPO_ACCIDENTE", to DataFrame "injuries" '  # to label and distinguish datasets.
+
+#In DataFrame `lesiones`, add at position `0`, a new column `TIPO_ACCIDENTE`, label it `Lesiones` to identify the dataset.
+
+injuries.insert(0, 'TIPO_ACCIDENTE', 'Lesiones')
+
+#Display
+
+injuries.head()
+
+' 5. 4. Style Column Names, of Dataframe "homicides" '
+
+#Rename "TIPO_ACCIDENTE" → "Tipo Accidente"
+
+injuries.rename(columns={"TIPO_ACCIDENTE": "Tipo Accidente"}, inplace=True)
+
+#Capitalize all UPPERCASE column names
+
+injuries.columns = [
+    col.replace("_", " ").title() if col.isupper() else col
+    for col in injuries.columns
+]
+
+#Display
+
+injuries.head()
+
+'5. 5. Standardize Values into DateTime' # for accurate time-based analysis.
+
+#In dataframe `lesiones`, column `Fecha`; convert string values; into datetime format, store the converted values back.
+
+injuries['Fecha'] = pd.to_datetime(injuries['Fecha'])
+
+#In dataframe `homicidios`, column `Fecha`; convert string values; into datetime format, store the converted values back.
+
+homicides['Fecha'] = pd.to_datetime(homicides['Fecha'])
+
+'5. 6. Concatenate multiple DataFrames' # to combine multiple DataFrames into one DataFrame.
+
+#In DataFrame `accidentes_viales`; combine DataFrame `lesiones` and DataFrame `homicidios`, ignoring index numbers to avoid duplicates.
+
+accidents = pd.concat([injuries, homicides], ignore_index=True)
+
+'5. 7. Sort Values' # to order rows based on column values.
+
+#In DataFrame `X`; sort values by column `Fecha` (oldest → newest).
+
+accidents = accidents.sort_values(by='Fecha')
+
+#Display
+
+accidents
+
+'5. 6. Review Dataframe Columns' # to decide which are relevant for analysis (after merging/cleaning).
+
+#In Dataframe `columnas`; review Dataframe `accidentes_viales` columns.
+
+columns = accidents.columns
+
+#Display
+
+columns
+
+' 5. 7. Check Nulls Dataframe "accidents" ' # to spot incomplete or irrelevant columns to fix or drop.
+
+#Count Nulls (Missing Values)
+
+null_counts = accidents.isnull().sum()
+
+#Nulls Percentage
+
+null_percentage = (null_counts / len(accidents)) * 100
+
+#Combine into one DataFrame for clarity
+
 missing_data = pd.DataFrame({
     'Null Count': null_counts,
     'Null Percentage': null_percentage.round(2)  # round to 2 decimals
 })
 
-# Display
+#Display
+
 missing_data
 
-# Remove Useless Columns
+'5. 8. Drop Useless Columns' # to remove incomplete or irrelevant columns that do not contribute to the analysis.
+
+#In variable `cols_drop`; store in a list the columns to drop.
+
 cols_drop = ['ID','OTRA DIRECCION','CALLE','ALTURA','CRUCE']
-accidentes_viales = accidentes_viales.drop(columns=cols_drop, errors='ignore')
-accidentes_viales
 
-# Check what type of data each column has (numeric, text, date), to decide what cleaning and converted is needed 
-accidentes_viales.info()
+#In DataFrame `accidents`; drop columns from variable `cols_drop` forcing execution.
 
-## 2. 2. **EDA**
+accidents = accidents.drop(columns = cols_drop, errors='ignore')
 
-'1. Who causes the most risk?'
+#Display
 
-acusados = accidentes_viales[accidentes_viales['ACUSADO'] != 'SD']
-acusados['ACUSADO'].value_counts(normalize=True) * 100
+accidents
 
-'2. Who are the most affected?'
+'5. 9. Show DataFrame "accidents" Summary' # to know what to Transform.
 
-victimas = accidentes_viales[accidentes_viales['VICTIMA'] != 'SD']
-victimas['VICTIMA'].value_counts(normalize=True) * 100
+accidents.info()
 
 # 3. **DATA VISUALIZATION**
 
-'1. Import Required Libraries'
+## 3. 1. **EDA**
+
+'1. Identifying the Responsible' # for the Business Problem.
+
+#In variable `responsibles`; DataFrame `accidents`, column `ACUSADO`, filter rows different from value `SD`.
+
+responsibles = accidents[accidents['Acusado'] != 'SD']
+
+#In variable `responsibles`, column `ACUSADO`; calculate percentage distribution of each value.
+
+responsibles['Acusado'].value_counts(normalize=True) * 100
+
+'2. Identifying the Victims' # of the Business Problem.
+
+#In variable `victims`; DataFrame `accidents`, column `VICTIMA`, filter rows different from value `SD`.
+
+victims = accidents[accidents['Victima'] != 'SD']
+
+#In variable `victims`, column `VICTIMA`; calculate percentage distribution of each value.
+
+victims['Victima'].value_counts(normalize=True) * 100
+
+'3. Importing Libraries'
 
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
 import seaborn as sns
 
-'2. Histogram'
+'4. Histogram of DataFrame "homicides", Column "Fecha" ' # to visualize distribution of Continuous (Numeric) values.
 
-# Homicides Over Time
-homicidios['FECHA'].hist(bins=20, color='skyblue', edgecolor='black')
-plt.title('Homicides Over Time')
-plt.xlabel('Date')
-plt.ylabel('Number')
-plt.show()
+#Histogram structure
 
-# Injuries Over Time
-lesiones['FECHA'].hist(bins=20, color='skyblue', edgecolor='black')
-plt.title('Injuries Over Time')
-plt.xlabel('Date')
-plt.ylabel('Number')
-plt.show()
+##In variable `n`, `bins`, `patches`; plot histogram DataFrame `homicides`, column `FECHA`, bin-quantity=20, bin-edge-color=00664D.
 
-'3. KDE (Kernel Density Estimation)'
+n, bins, patches = plt.hist(homicides['Fecha'], bins=20, edgecolor='#00664D')
 
-# Homicides Over Time
-sns.kdeplot(homicidios['FECHA'], shade=True, color='skyblue')
-plt.title('Homicides Over Time')
-plt.xlabel('Date')
-plt.ylabel('Density')
-plt.show()
+#Colors set-up
 
-# Injuries Over Time
-sns.kdeplot(lesiones['FECHA'], shade=True, color='skyblue')
-plt.title('Injuries Over Time')
-plt.xlabel('Date')
-plt.ylabel('Density')
-plt.show()
+##In variable `colors`; create a list of [`color_code1`, `color_code2`] to alternate in the histogram bars.
 
-'4 Time Scatter'
+colors = ['#66FFDE', '#66FFDE']
 
-# Homicides Over Time
-homicidios['Victima_Code'] = pd.factorize(homicidios['VICTIMA'])[0]
-plt.scatter(homicidios['FECHA'], homicidios['Victima_Code'], alpha=0.5)
-plt.yticks(range(len(homicidios['VICTIMA'].unique())), homicidios['VICTIMA'].unique())
-plt.title("Homicides Victims Over Time")
-plt.xlabel("Date")
-plt.ylabel("Victim Type")
-plt.show()
+#Apply colors
 
-# Injuries Over Time
-lesiones['Victima_Code'] = pd.factorize(lesiones['VICTIMA'])[0]
+##In loop index `i`, variable `p`, using function `enumerate(variable `patches`)`; iterate over each bar in `patches`, and apply method `set_facecolor` with colors selected from variable `colors` using modulo index 2.
 
-plt.scatter(lesiones['FECHA'], lesiones['Victima_Code'], alpha=0.5)
-plt.yticks(
-    range(len(lesiones['VICTIMA'].unique())), 
-    lesiones['VICTIMA'].unique()
-)
-plt.title("Injuries Victims Over Time")
-plt.xlabel("Date")
-plt.ylabel("Victim Type")
-plt.show()
+for i, p in enumerate(patches):
+    p.set_facecolor(colors[i % 2])
 
-'5. Heatmap'
+#Apply fonts
 
-sns.heatmap(homicidios.corr(numeric_only=True), annot=True, cmap='coolwarm')
-plt.title('Correlation Matrix')
-plt.show()
+##For each font file, call fm.fontManager.addfont("path") to load it into Matplotlib.
 
-'6. Pie Chart'
+fm.fontManager.addfont("/content/Century Gothic.ttf")
+fm.fontManager.addfont("/content/Century Gothic Bold.ttf")
+fm.fontManager.addfont("/content/Century Gothic Italic.ttf")
+fm.fontManager.addfont("/content/Century Gothic Bold Italic.ttf")
 
-# Accused
-acusado_counts = homicidios[homicidios['ACUSADO'] != 'SD']['ACUSADO'].value_counts()
-plt.pie(acusado_counts, labels=acusado_counts.index, autopct='%1.1f%%', startangle=90)
-plt.axis('equal')
-plt.title('Accused Distribution')
-plt.show()
+#Set as global default
 
-# https://www.argentina.gob.ar/caba/comunas
-porcentajes_comuna = homicidios['COMUNA'].value_counts(normalize=True) * 100
-porcentajes_comuna = porcentajes_comuna.sort_values(ascending=False)
-porcentajes_comuna
+#In submodule `plt`, dictionary `rcParams`, key `'font.family'`; assign font "Century Gothic".
 
-# COnsiderar cada fila como un accidente vial y separapr por horas para saber en qué horario suceden más accidentes
+plt.rcParams['font.family'] = "Century Gothic"
 
-# Convierte la columna 'HORA' a formato de fecha y hora, ignorando los valores 'SD'
-siniestros_viales = homicidios[homicidios['HORA'] != 'SD'] # != (desigual): ignorar datos 'SD'
-siniestros_viales['HORA'] = pd.to_datetime(homicidios['HORA'], errors='coerce') # errors='coerce' forzar errores
+#Title
 
-# Redondea las horas al múltiplo de 2 más cercano
-# Opción 1
-siniestros_viales['HORA_redondeada'] = (siniestros_viales['HORA'] + pd.to_timedelta(1, 'h')).dt.floor('6h')
-# Opción 2
-# siniestros_viales['HORA_redondeada'] = (siniestros_viales['HORA'] + np.timedelta64(1, 'h')).dt.floor('6h') # pasar a tiempo de una jora dividio cada 6 horas. dt es segmentos de tiempos
+#submodule.method('text', parameter1=value,  parameter2=value,  parameter3=value )
 
-# Cuenta el número de accidentes por intervalo de 2 horas
-conteo_accidentes = siniestros_viales.groupby('HORA_redondeada').size().reset_index(name='NumAccidentes') # Ordenar por horas y resetar index y que el nuevo indice sea n accidentes.
+plt.title('Deaths Over Time', fontsize=12.5, fontweight='bold', fontname='Century Gothic')
 
-# Ordena el DataFrame de mayor a menor
-conteo_accidentes = conteo_accidentes.sort_values(by='NumAccidentes', ascending=False) # sort_values ordenar, ascending=False mayor a menor
+#Y-axis label
+plt.ylabel('Number of Deaths', fontsize=10)
+plt.grid(axis='y', linestyle='--', alpha=0.5)
 
-# Extrae solo la hora de la columna 'HORA_redondeada'
-conteo_accidentes['HORA_redondeada'] = conteo_accidentes['HORA_redondeada'].dt.time # pasar a datetime pero extraer la fecha
+#Remove top + right border lines
 
-conteo_accidentes
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
 
-# Accidents by Hour (rounded to 6h)
-
-homicidios = homicidios[homicidios['HORA'] != 'SD']
-homicidios['HORA'] = pd.to_datetime(homicidios['HORA'], errors='coerce')
-homicidios['HORA_redondeada'] = (homicidios['HORA'] + pd.to_timedelta(1, 'h')).dt.floor('6h')
-
-conteo_horas = homicidios.groupby('HORA_redondeada').size().reset_index(name='NumAccidentes')
-conteo_horas = conteo_horas.sort_values(by='NumAccidentes', ascending=False)
-conteo_horas['HORA_redondeada'] = conteo_horas['HORA_redondeada'].dt.time
-conteo_horas['NumAccidentes'].plot(kind='line', figsize=(8, 4), title='Accidentes por Franja Horaria')
+#Display
 
 plt.show()
 
-# COnsiderar cada fila como un accidente vial y separapr por Comuna y Hora para saber en qué horario suceden más accidentes
+<img width="562" height="433" alt="1" src="https://github.com/user-attachments/assets/a738837d-6c4e-4a97-904b-cf4787406247" />
 
-# Filtra las filas que no contienen 'SD' en la columna 'HORA'
-siniestros_viales = homicidios[homicidios['HORA'] != 'SD']
+'5. Histogram of DataFrame "injuries", Column "Fecha"' # to visualize distribution of Continuous (Numeric) values.
 
-# Convierte la columna 'HORA' a tipo datetime
-siniestros_viales['HORA'] = pd.to_datetime(homicidios['HORA'], errors='coerce')
+#1. Create the Histogram structure
 
-# Redondea las horas al múltiplo de 2 más cercano
-siniestros_viales['HORA_redondeada'] = (siniestros_viales['HORA'] + pd.to_timedelta(1, 'h')).dt.floor('6h')
+##Syntax Structure
 
-# Filtra las filas que no contienen 'SD' en la columna 'HORA_redondeada'
-siniestros_viales = siniestros_viales[siniestros_viales['HORA_redondeada'].notna()]
+library.function(variable["argument"], parameter1=argument, parameter2="argument", parameter3="argument")
 
-# Cuenta el número de accidentes por intervalo de 2 horas
-conteo_accidentes = siniestros_viales.groupby(['COMUNA', 'HORA_redondeada']).size().reset_index(name='NumAccidentes')
+##Syntax Template
 
-# Ordena por 'NumAccidentes' de mayor a menor
-conteo_accidentes = conteo_accidentes.sort_values(by='NumAccidentes', ascending=False)
+plt.hist(dataset["column"], bins=#, facecolor="#color_code1", edgecolor="#color_code2")
 
-# Muestra el DataFrame resultante
-conteo_accidentes
+##Code Read: plot, histogram, of DataFrame `injuries`, column `FECHA`, using 20 bins, and custom colors.
 
-# 4. **HYPOTHESIS**
+plt.hist(injuries['Fecha'], bins=20, facecolor='#66FFDE', edgecolor='#00664D')
 
-**EDA**
+#2. Set a Font as the global default
 
-1. Risk Causers: Cars (≈53%) are the main source of accidents; public transport, pickups, motorcycles, and taxis follow.
+##Syntax Structure
 
-2. Most Affected: Motorcyclists (≈42%) are most vulnerable, followed by pedestrians, cyclists, car occupants, and public transport users.
+submodule.dictionary['key'] = "value"
 
-**Visualizations**
+##Syntax Template
 
-1. Histogram: No clear time trend in homicides/injuries.
+plt.rcParams['font.family'] = "Font Name"
 
-2. KDE: Suggests a decline toward 2023.
+##Code Read: plot, access (.), dictionary, key 'font.family', assign (=), value "Century Gothic"
 
-3. Heatmap: No strong correlation between victims, commune, or victim type codes.
+plt.rcParams['font.family'] = "Century Gothic"
 
-# 5. **RESULTS**
+#3. Create the Title
 
-**Business Problem**
-  - How can I reduce urban risk?
+##Syntax Structure
 
-**Business Recommendation**
+submodule.method("argument", parameter1=argument, parameter2="argument", parameter3="argument")
 
-1. Target the biggest risk causers (Cars, ≈53%).
-  * Stricter speed monitoring, awareness campaigns, and traffic law enforcement for private cars.
+##Syntax Template
 
-2. Protect the most affected (Motorcyclists, ≈42%).
-  * Enforce helmet use, create safe lanes, and increase rider safety training.
+plt.title("Text", fontsize=#, fontweight="bold", fontname="Font Name")
 
-3. Urban infrastructure & zoning
-  * High-risk zones need improved lighting, signage, and redesign to reduce accidents.
+##Code Read: plot, access title, text assing, size assign, weight assign, font assign.
 
-4. Policy & planning
-  * Focus resources on the top 2–3 victim groups (motorcyclists, pedestrians, cyclists).
+plt.title("Injuries Over Time", fontsize=12.5, fontweight='bold', fontname='Century Gothic')
 
-5. Continuous monitoring (track KPIs).
+#4. Create the Y-axis Label
+
+##Syntax Structure
+
+submodule.method("argument", parameter=argument)
+
+##Syntax Template
+
+plt.ylabel("Label", fontsize=#)
+
+##Code Read: plot, access y-axis label, text, size assign.
+
+plt.ylabel('Number of Injuries', fontsize=10)
+
+#5. Rotate the X-axis Ticks
+
+##Syntax Structure
+
+submodule.method(parameter=argument)
+
+##Syntax Template
+
+plt.xticks(rotation=#)
+
+##Code Read: plot, access x-axis tick, rotation assign.
+
+plt.xticks(rotation=45)
+
+#6. Create the Grid lines
+
+##Syntax Structure
+
+submodule.method(parameter1="argument", parameter2="argument", parameter3=argument)
+
+##Syntax Template
+
+plt.grid(axis="y", linestyle="--", alpha=#)
+
+##Code Read: plot, access grid, axis assing, linestyle assign, transparency assign.
+
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+
+#7. Remove top + right Border lines
+
+##Syntax Structure
+
+submodule.method().dictionary["argument"].method(argument)
+
+##Syntax Template
+
+plt.gca().spines["border_remove"].set_visible(False)
+
+##Code Read: plot, access get-current-axes, access spines "top", access set_visible False.
+##Code Read: plot, access get-current-axes, access spines "right", access set_visible False.
+
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+
+#8. Display the Plot
+
+##Syntax Structure
+
+submodule.method()
+
+##Syntax Template
+
+plt.show()
+
+##Code Read: plot, access show.
+
+plt.show()
+
+<img width="576" height="465" alt="2" src="https://github.com/user-attachments/assets/71b8edeb-04fc-4efc-9549-530181c7fc19" />
