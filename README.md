@@ -37,12 +37,12 @@
 
 ## **References**
 
-3. <u>Data Visualization</u>
+### 3. Data Visualization
 
-3. 1. Histogram of DataFrame "homicides", Column "Fecha" ' # to visualize distribution of Continuous (Numeric) values.
+#### 3. 1. Histogram of DataFrame "homicides", Column "Fecha" ' # to visualize distribution of Continuous (Numeric) values.
 
 <img width="562" height="433" alt="1" src="https://github.com/user-attachments/assets/a738837d-6c4e-4a97-904b-cf4787406247" />
 
-3. 2. Histogram of DataFrame "injuries", Column "Fecha"' # to visualize distribution of Continuous (Numeric) values.
+#### 3. 2. Histogram of DataFrame "injuries", Column "Fecha"' # to visualize distribution of Continuous (Numeric) values.
 
 <img width="576" height="465" alt="2" src="https://github.com/user-attachments/assets/71b8edeb-04fc-4efc-9549-530181c7fc19" />
