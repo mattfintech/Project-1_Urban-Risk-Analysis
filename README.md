@@ -57,18 +57,21 @@
 
 #### 3. 5. Time Scatter of DataFrame "homicides", Column "Fecha" # to visualize events over Time (Datetime) against Continuous or Categorical values.
 
-<img width="637" height="433" alt="5" src="https://github.com/user-attachments/assets/07bf1279-7642-45a5-8936-d60f63154036" />
+<img width="697" height="433" alt="5" src="https://github.com/user-attachments/assets/66e33bd5-716b-40ed-bc07-d9088df7bf7c" />
 
 #### 3. 6. Time Scatter of DataFrame "injuries", Column "Fecha" # to visualize events over Time (Datetime) against Continuous or Categorical values.
 
-<img width="671" height="465" alt="6" src="https://github.com/user-attachments/assets/5f5575be-7a02-47b4-8681-14f0e0c66753" />
+<img width="651" height="465" alt="6" src="https://github.com/user-attachments/assets/8126eecd-df26-43dd-bac3-9cad9deae34d" />
 
 #### 3. 7. Heatmap of DataFrame "homicides", Numeric Columns # to visualize correlation between Continuous (numeric) variables.
 
-<img width="528" height="433" alt="7" src="https://github.com/user-attachments/assets/43220e74-e351-4fc5-ba98-c72a54d4e45c" />
+<img width="528" height="433" alt="7" src="https://github.com/user-attachments/assets/3d45d471-769d-4b7a-a8b2-ee96339b2f38" />
 
 #### 3. 8. Heatmap of DataFrame "injuries", Numeric Columns # to visualize correlation between Continuous (numeric) variables.
 
-<img width="528" height="433" alt="8" src="https://github.com/user-attachments/assets/b9711e8a-7a0b-4120-95c7-bffd936a222b" />
+<img width="528" height="433" alt="8" src="https://github.com/user-attachments/assets/20604671-b768-43d6-b78d-ed70b67df15e" />
 
 #### 3. 9. Pie Chart of DataFrame "homicides", Column "Acusado" # to visualize proportion of Categorical values.
+
+<img width="690" height="575" alt="9" src="https://github.com/user-attachments/assets/abded251-ff6d-49fa-8082-37c728de0ca8" />
+
