@@ -55,11 +55,11 @@
 
 <img width="587" height="433" alt="4" src="https://github.com/user-attachments/assets/1c8ea15c-4e83-40bb-9785-8cf3a62d9955" />
 
-#### 3. 5. Time Scatter of DataFrame "homicides", Column "Fecha" # to visualize events over Time (Datetime) against Continuous or Categorical values.
+#### 3. 5. Scatter Plot of DataFrame "homicides", Column "Fecha" # to visualize Categorical or Continuous values against Time (datetime).
 
 <img width="697" height="433" alt="5" src="https://github.com/user-attachments/assets/66e33bd5-716b-40ed-bc07-d9088df7bf7c" />
 
-#### 3. 6. Time Scatter of DataFrame "injuries", Column "Fecha" # to visualize events over Time (Datetime) against Continuous or Categorical values.
+#### 3. 6. Scatter Plot of DataFrame "injuries", Column "Fecha" # to visualize Categorical or Continuous values against Time (datetime).
 
 <img width="651" height="465" alt="6" src="https://github.com/user-attachments/assets/8126eecd-df26-43dd-bac3-9cad9deae34d" />
 
