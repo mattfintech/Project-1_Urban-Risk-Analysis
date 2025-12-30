@@ -201,3 +201,194 @@ responsibles = accidents[accidents['Acusado'] != 'SD']
 
 responsibles['Acusado'].value_counts(normalize=True) * 100
 
+'2. Identifying the Victims' # of the Business Problem.
+
+#In variable `victims`; DataFrame `accidents`, column `VICTIMA`, filter rows different from value `SD`.
+
+victims = accidents[accidents['Victima'] != 'SD']
+
+#In variable `victims`, column `VICTIMA`; calculate percentage distribution of each value.
+
+victims['Victima'].value_counts(normalize=True) * 100
+
+'3. Importing Libraries'
+
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+import seaborn as sns
+
+'4. Histogram of DataFrame "homicides", Column "Fecha" ' # to visualize distribution of Continuous (Numeric) values.
+
+#Histogram structure
+
+##In variable `n`, `bins`, `patches`; plot histogram DataFrame `homicides`, column `FECHA`, bin-quantity=20, bin-edge-color=00664D.
+
+n, bins, patches = plt.hist(homicides['Fecha'], bins=20, edgecolor='#00664D')
+
+#Colors set-up
+
+##In variable `colors`; create a list of [`color_code1`, `color_code2`] to alternate in the histogram bars.
+
+colors = ['#66FFDE', '#66FFDE']
+
+#Apply colors
+
+##In loop index `i`, variable `p`, using function `enumerate(variable `patches`)`; iterate over each bar in `patches`, and apply method `set_facecolor` with colors selected from variable `colors` using modulo index 2.
+
+for i, p in enumerate(patches):
+    p.set_facecolor(colors[i % 2])
+
+#Apply fonts
+
+##For each font file, call fm.fontManager.addfont("path") to load it into Matplotlib.
+
+fm.fontManager.addfont("/content/Century Gothic.ttf")
+fm.fontManager.addfont("/content/Century Gothic Bold.ttf")
+fm.fontManager.addfont("/content/Century Gothic Italic.ttf")
+fm.fontManager.addfont("/content/Century Gothic Bold Italic.ttf")
+
+#Set as global default
+
+#In submodule `plt`, dictionary `rcParams`, key `'font.family'`; assign font "Century Gothic".
+
+plt.rcParams['font.family'] = "Century Gothic"
+
+#Title
+
+#submodule.method('text', parameter1=value,  parameter2=value,  parameter3=value )
+
+plt.title('Deaths Over Time', fontsize=12.5, fontweight='bold', fontname='Century Gothic')
+
+#Y-axis label
+plt.ylabel('Number of Deaths', fontsize=10)
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+
+#Remove top + right border lines
+
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines['right'].set_visible(False)
+
+#Display
+
+plt.show()
+
+<img width="562" height="433" alt="1" src="https://github.com/user-attachments/assets/a738837d-6c4e-4a97-904b-cf4787406247" />
+
+'5. Histogram of DataFrame "injuries", Column "Fecha"' # to visualize distribution of Continuous (Numeric) values.
+
+#1. Create the Histogram structure
+
+##Syntax Structure
+
+library.function(variable["argument"], parameter1=argument, parameter2="argument", parameter3="argument")
+
+##Syntax Template
+
+plt.hist(dataset["column"], bins=#, facecolor="#color_code1", edgecolor="#color_code2")
+
+##Code Read: plot, histogram, of DataFrame `injuries`, column `FECHA`, using 20 bins, and custom colors.
+
+plt.hist(injuries['Fecha'], bins=20, facecolor='#66FFDE', edgecolor='#00664D')
+
+#2. Set a Font as the global default
+
+##Syntax Structure
+
+submodule.dictionary['key'] = "value"
+
+##Syntax Template
+
+plt.rcParams['font.family'] = "Font Name"
+
+##Code Read: plot, access (.), dictionary, key 'font.family', assign (=), value "Century Gothic"
+
+plt.rcParams['font.family'] = "Century Gothic"
+
+#3. Create the Title
+
+##Syntax Structure
+
+submodule.method("argument", parameter1=argument, parameter2="argument", parameter3="argument")
+
+##Syntax Template
+
+plt.title("Text", fontsize=#, fontweight="bold", fontname="Font Name")
+
+##Code Read: plot, access title, text assing, size assign, weight assign, font assign.
+
+plt.title("Injuries Over Time", fontsize=12.5, fontweight='bold', fontname='Century Gothic')
+
+#4. Create the Y-axis Label
+
+##Syntax Structure
+
+submodule.method("argument", parameter=argument)
+
+##Syntax Template
+
+plt.ylabel("Label", fontsize=#)
+
+##Code Read: plot, access y-axis label, text, size assign.
+
+plt.ylabel('Number of Injuries', fontsize=10)
+
+#5. Rotate the X-axis Ticks
+
+##Syntax Structure
+
+submodule.method(parameter=argument)
+
+##Syntax Template
+
+plt.xticks(rotation=#)
+
+##Code Read: plot, access x-axis tick, rotation assign.
+
+plt.xticks(rotation=45)
+
+#6. Create the Grid lines
+
+##Syntax Structure
+
+submodule.method(parameter1="argument", parameter2="argument", parameter3=argument)
+
+##Syntax Template
+
+plt.grid(axis="y", linestyle="--", alpha=#)
+
+##Code Read: plot, access grid, axis assing, linestyle assign, transparency assign.
+
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+
+#7. Remove top + right Border lines
+
+##Syntax Structure
+
+submodule.method().dictionary["argument"].method(argument)
+
+##Syntax Template
+
+plt.gca().spines["border_remove"].set_visible(False)
+
+##Code Read: plot, access get-current-axes, access spines "top", access set_visible False.
+##Code Read: plot, access get-current-axes, access spines "right", access set_visible False.
+
+plt.gca().spines['top'].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+
+#8. Display the Plot
+
+##Syntax Structure
+
+submodule.method()
+
+##Syntax Template
+
+plt.show()
+
+##Code Read: plot, access show.
+
+plt.show()
+
+<img width="576" height="465" alt="2" src="https://github.com/user-attachments/assets/71b8edeb-04fc-4efc-9549-530181c7fc19" />
+
