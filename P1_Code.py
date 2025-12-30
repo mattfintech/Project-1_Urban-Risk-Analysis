@@ -1,4 +1,4 @@
-# 1. **BUSINESS PROBLEM**
+# 1. **PROBLEM**
 
 ## 1. 1. **Context**
 * Urban areas face daily risks, and government agencies need data-driven insights to allocate resources and reduce them.
@@ -87,16 +87,22 @@ injuries.head()
 
 ' 5. 4. Style Column Names, of Dataframe "homicides" '
 
-#Rename "TIPO_ACCIDENTE" → "Tipo Accidente"
+# Rename "TIPO_ACCIDENTE" → "Tipo Accidente"
 injuries.rename(columns={"TIPO_ACCIDENTE": "Tipo Accidente"}, inplace=True)
 
-#Capitalize all UPPERCASE column names
+# Rename "Nº VICTIMAS" → "Nº Victimas"
+injuries.rename(columns={"Nº VICTIMAS": "Nº Victimas"}, inplace=True)
+
+# Capitalize all UPPERCASE column names
 injuries.columns = [
     col.replace("_", " ").title() if col.isupper() else col
     for col in injuries.columns
 ]
 
-#Display
+# Show all columns
+pd.set_option('display.max_columns', None)
+
+# Display
 injuries.head()
 
 '5. 5. Standardize Values into DateTime' # for accurate time-based analysis.
@@ -120,12 +126,12 @@ accidents = accidents.sort_values(by='Fecha')
 #Display
 accidents
 
-'5. 6. Review Dataframe Columns' # to decide which are relevant for analysis (after merging/cleaning).
+' 5. 6. Review Dataframe "accidents" Columns ' # to decide which are relevant for analysis (after merging/cleaning).
 
-#In Dataframe `columnas`; review Dataframe `accidentes_viales` columns.
+# In Dataframe `columnas`; review Dataframe `accidentes_viales` columns.
 columns = accidents.columns
 
-#Display
+# Display
 columns
 
 ' 5. 7. Check Nulls Dataframe "accidents" ' # to spot incomplete or irrelevant columns to fix or drop.
@@ -145,15 +151,15 @@ missing_data = pd.DataFrame({
 #Display
 missing_data
 
-'5. 8. Drop Useless Columns' # to remove incomplete or irrelevant columns that do not contribute to the analysis.
+' 5. 8. Drop Useless Columns in Dataframe "accidents" ' # to remove incomplete or irrelevant columns that do not contribute to the analysis.
 
-#In variable `cols_drop`; store in a list the columns to drop.
-cols_drop = ['ID','OTRA DIRECCION','CALLE','ALTURA','CRUCE']
+# In variable `cols_drop`; store in a list the columns to drop.
+cols_drop = ['Id','Otra Direccion','Calle','Altura','Cruce']
 
-#In DataFrame `accidents`; drop columns from variable `cols_drop` forcing execution.
+# In DataFrame `accidents`; drop columns from variable `cols_drop` forcing execution.
 accidents = accidents.drop(columns = cols_drop, errors='ignore')
 
-#Display
+# Display
 accidents
 
 '5. 9. Show DataFrame "accidents" Summary' # to know what to Transform.
@@ -164,20 +170,20 @@ accidents.info()
 
 ## 3. 1. **EDA**
 
-'1. Identifying the Responsible' # for the Business Problem.
+' 1. Identifying the Perpetrators from Dataframe "accidents" ' # for identifying the Problem's Perpetrator.
 
-#In variable `responsibles`; DataFrame `accidents`, column `ACUSADO`, filter rows different from value `SD`.
-responsibles = accidents[accidents['Acusado'] != 'SD']
+# Filter records with identified responsibles, exclude Value "SD".
+responsibles = accidents[accidents["Acusado"] != 'SD']
 
-#In variable `responsibles`, column `ACUSADO`; calculate percentage distribution of each value.
-responsibles['Acusado'].value_counts(normalize=True) * 100
+# Calculate percentage distribution of responsibles
+responsibles["Acusado"].value_counts(normalize=True) * 100
 
 '2. Identifying the Victims' # of the Business Problem.
 
-#In variable `victims`; DataFrame `accidents`, column `VICTIMA`, filter rows different from value `SD`.
+# Filter records with identified responsibles, exclude Value "SD".
 victims = accidents[accidents['Victima'] != 'SD']
 
-#In variable `victims`, column `VICTIMA`; calculate percentage distribution of each value.
+# Calculate percentage distribution of responsibles
 victims['Victima'].value_counts(normalize=True) * 100
 
 '3. Importing Libraries'
@@ -186,134 +192,122 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import seaborn as sns
 
-'4. Histogram of DataFrame "homicides", Column "Fecha" ' # to visualize distribution of Continuous (Numeric) values.
+' 4. Histogram of DataFrame "homicides", Column "Fecha" ' # to visualize distribution of Continuous (Numeric) values.
 
-#1. Histogram structure
-
-##In variable `n`, `bins`, `patches`; plot histogram DataFrame `homicides`, column `FECHA`, bin-quantity=20, bin-edge-color=00664D.
+# 1. Histogram structure
 n, bins, patches = plt.hist(homicides['Fecha'], bins=20, edgecolor='#00664D')
 
-#2. Colors set-up
-
-##In variable `colors`; create a list of [`color_code1`, `color_code2`] to alternate in the histogram bars.
+# 2. Colors set-up
 colors = ['#66FFDE', '#66FFDE']
 
-#3. Apply colors
-
-##In loop index `i`, variable `p`, using function `enumerate(variable `patches`)`; iterate over each bar in `patches`, and apply method `set_facecolor` with colors selected from variable `colors` using modulo index 2.
+# 3. Apply colors
 for i, p in enumerate(patches):
     p.set_facecolor(colors[i % 2])
 
-#4. Apply fonts
-
-##For each font file, call fm.fontManager.addfont("path") to load it into Matplotlib.
+# 4. Apply fonts
 fm.fontManager.addfont("/content/Century Gothic.ttf")
 fm.fontManager.addfont("/content/Century Gothic Bold.ttf")
 fm.fontManager.addfont("/content/Century Gothic Italic.ttf")
 fm.fontManager.addfont("/content/Century Gothic Bold Italic.ttf")
 
-#5. Set as global default
-
-#In submodule `plt`, dictionary `rcParams`, key `'font.family'`; assign font "Century Gothic".
+# 5. Set font as global default
 plt.rcParams['font.family'] = "Century Gothic"
 
-#6. Title
-
-#submodule.method('text', parameter1=value,  parameter2=value,  parameter3=value )
+# 6. Title
 plt.title('Deaths Over Time', fontsize=12.5, fontweight='bold', fontname='Century Gothic')
 
-#7. Y-axis label
+# 7. Y-axis label
 plt.ylabel('Number of Deaths', fontsize=10)
 plt.grid(axis='y', linestyle='--', alpha=0.5)
 
-#8. Remove top + right border lines
+# 8. Remove top + right border lines
 plt.gca().spines['top'].set_visible(False)
 plt.gca().spines['right'].set_visible(False)
 
-#9. Display
+# 9. Display
 plt.show()
 
-'5. Histogram of DataFrame "injuries", Column "Fecha"' # to visualize distribution of Continuous (Numeric) values.
+' 5. Histogram of DataFrame "injuries", Column "Fecha" ' # to visualize distribution of Continuous (Numeric) values.
 
-#1. Create the Histogram structure
+# 1. Create the Histogram structure
 '''
-##Syntax Structure
+## Syntax Structure
 library.function(variable["argument"], parameter1=argument, parameter2="argument", parameter3="argument")
-##Syntax Template
+## Syntax Template
 plt.hist(dataset["column"], bins=#, facecolor="#color_code1", edgecolor="#color_code2")
-##Code Read: plot, histogram, of DataFrame `injuries`, column `FECHA`, using 20 bins, and custom colors.
+## Code Read: plot, histogram, of DataFrame `injuries`, column `FECHA`, using 20 bins, and custom colors.
 '''
 plt.hist(injuries['Fecha'], bins=20, facecolor='#66FFDE', edgecolor='#00664D')
 
-#2. Set a Font as the global default
+# 2. Set a Font as the global default
 '''
-##Syntax Structure
+## Syntax Structure
 submodule.dictionary['key'] = "value"
-##Syntax Template
+## Syntax Template
 plt.rcParams['font.family'] = "Font Name"
-##Code Read: plot, access (.), dictionary, key 'font.family', assign (=), value "Century Gothic"
+## Code Read: plot, access (.), dictionary, key 'font.family', assign (=), value "Century Gothic"
 '''
 plt.rcParams['font.family'] = "Century Gothic"
 
-#3. Create the Title
+# 3. Create the Title
 '''
-##Syntax Structure
+## Syntax Structure
 submodule.method("argument", parameter1=argument, parameter2="argument", parameter3="argument")
-##Syntax Template
+## Syntax Template
 plt.title("Text", fontsize=#, fontweight="bold", fontname="Font Name")
-##Code Read: plot, access title, text assing, size assign, weight assign, font assign.
+## Code Read: plot, access title, text assing, size assign, weight assign, font assign.
 '''
 plt.title("Injuries Over Time", fontsize=12.5, fontweight='bold', fontname='Century Gothic')
 
-#4. Create the Y-axis Label
+# 4. Create the Y-axis Label
 '''
-##Syntax Structure
+## Syntax Structure
 submodule.method("argument", parameter=argument)
-##Syntax Template
+## Syntax Template
 plt.ylabel("Label", fontsize=#)
-##Code Read: plot, access y-axis label, text, size assign.
+## Code Read: plot, access y-axis label, text, size assign.
 '''
 plt.ylabel('Number of Injuries', fontsize=10)
 
-#5. Rotate the X-axis Ticks
+# 5. Rotate the X-axis Ticks
 '''
-##Syntax Structure
+## Syntax Structure
 submodule.method(parameter=argument)
-##Syntax Template
+## Syntax Template
 plt.xticks(rotation=#)
-##Code Read: plot, access x-axis tick, rotation assign.
+## Code Read: plot, access x-axis tick, rotation assign.
 '''
 plt.xticks(rotation=45)
 
-#6. Create the Grid lines
+# 6. Create the Grid lines
 '''
-##Syntax Structure
+## Syntax Structure
 submodule.method(parameter1="argument", parameter2="argument", parameter3=argument)
-##Syntax Template
+## Syntax Template
 plt.grid(axis="y", linestyle="--", alpha=#)
-##Code Read: plot, access grid, axis assing, linestyle assign, transparency assign.
+## Code Read: plot, access grid, axis assing, linestyle assign, transparency assign.
 '''
 plt.grid(axis='y', linestyle='--', alpha=0.5)
 
-#7. Remove top + right Border lines
+# 7. Remove top + right Border lines
 '''
-##Syntax Structure
+## Syntax Structure
 submodule.method().dictionary["argument"].method(argument)
-##Syntax Template
+## Syntax Template
 plt.gca().spines["border_remove"].set_visible(False)
-##Code Read: plot, access get-current-axes, access spines "top", access set_visible False.
-##Code Read: plot, access get-current-axes, access spines "right", access set_visible False.
+## Code Read: plot, access get-current-axes, access spines "top", access set_visible False.
+## Code Read: plot, access get-current-axes, access spines "right", access set_visible False.
 '''
 plt.gca().spines['top'].set_visible(False)
 plt.gca().spines["right"].set_visible(False)
 
-#8. Display the Plot
+# 8. Display the Plot
 '''
-##Syntax Structure
+## Syntax Structure
 submodule.method()
-##Syntax Template
+## Syntax Template
 plt.show()
-##Code Read: plot, access show.
+## Code Read: plot, access show.
 '''
 plt.show()
 
@@ -343,4 +337,167 @@ plt.gca().spines["top"].set_visible(False)
 plt.gca().spines["right"].set_visible(False)
 
 # 8. Display the Plot
+plt.show()
+
+' 7. KDE of DataFrame "injuries", Column "Fecha" ' # to visualize smooth distribution of Continuous values.
+
+# 1. Create the KDE structure
+sns.kdeplot(homicides["Fecha"], color="#66FFDE", fill=True)  # Fill color
+sns.kdeplot(homicides["Fecha"], color="#00664D", fill=False, linewidth=1)  # Edge color
+
+# 2. Set a Font as the global default
+plt.rcParams["font.family"] = "Century Gothic"
+
+# 3. Create the Title
+plt.title("Injuries Over Time", fontsize=12.5, fontweight="bold", fontname="Century Gothic")
+
+# 4. Create the Y-axis Label
+plt.ylabel('Density of Injuries', fontsize=10)  # Density = Concentration ⇒ Deaths are more concentrated around 2017–2019, than around 2015 or 2023.
+
+# 5. Remove the auto-generated X-axis label
+plt.gca().set_xlabel("")
+
+# 6. Create the Grid lines
+plt.grid(axis="y", linestyle="--", alpha=0.5)
+
+# 7. Remove top + right Border lines
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+
+# 8. Display the Plot
+plt.show()
+
+' 8. Scatter Plot of DataFrame "homicides", Column "Fecha" ' # to visualize Categorical or Continuous values against Time (datetime).
+
+# 1. Encode Categorical values as Numeric codes to enable visualization.
+homicides["Victima_Code"] = pd.factorize(homicides["Victima"])[0]
+
+# 2. Create the Scatter Plot structure.
+plt.scatter(homicides["Fecha"], homicides["Victima_Code"], alpha=0.5, color="#66FFDE")
+
+# 3. Set a Font as the global default.
+plt.rcParams['font.family'] = "Century Gothic"
+
+# 4. Map (assign) Numeric codes back to Categorical Y-axis labels.
+labels = homicides["Victima"].unique()
+plt.yticks(range(len(labels)), labels)
+
+# 5. Create the Title.
+plt.title("Deaths Over Time", fontsize=12.5, fontweight="bold", fontname="Century Gothic")
+
+# 6. Create the Y-axis Label.
+plt.ylabel("Type of Victim", fontsize=10)
+
+# 7. Create the Grid lines.
+plt.grid(axis="y", linestyle="--", alpha=0.5)
+
+# 8. Remove top + right Border lines.
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+
+# 9. Display the Plot.
+
+# Rename.
+homicides["Victima"] = homicides["Victima"].replace({
+    "Moto Peaton": "Motorcycle Pedestrian",
+    "Object": "Object Fixed",
+    "Mobile": "Moving Object",
+    "PASAJEROS": "Passenger",
+    "BICICLETA": "Bicycle",
+    "CARGAS": "Cargo",
+    "SD": "Unknown",
+    "PEATON": "Pedestrian",
+    "AUTO": "Car",
+    "MOTO": "Motorcycle"
+})
+
+## Display.
+plt.show()
+
+' 9. Scatter Plot of DataFrame "injuries", Column "Fecha" ' # to visualize Categorical or Continuous values against Time (datetime).
+
+# 1. Encode Categorical values as Numeric codes to enable visualization.
+injuries['Victima_Code'] = pd.factorize(injuries['Victima'])[0]
+
+# 2. Create the Scatter Plot structure.
+plt.scatter(injuries["Fecha"], injuries["Victima_Code"], alpha=0.5, color="#66FFDE")
+
+# 3. Set a Font as the global default.
+plt.rcParams['font.family'] = "Century Gothic"
+
+# 4. Map (assign) Numeric codes back to Categorical Y-axis labels.
+labels = injuries["Victima"].unique()
+plt.yticks(range(len(labels)), labels)
+
+# 5. Create the Title.
+plt.title("Injuries Over Time", fontsize=12.5, fontweight="bold", fontname="Century Gothic")
+
+# 6. Create the Y-axis Label.
+plt.ylabel("Type of Victim", fontsize=10)
+
+# 7. Rotate the X-axis Ticks.
+plt.xticks(rotation=45)
+
+# 8. Create the Grid lines.
+plt.grid(axis="y", linestyle="--", alpha=0.5)
+
+# 9. Remove top + right Border lines.
+plt.gca().spines["top"].set_visible(False)
+plt.gca().spines["right"].set_visible(False)
+
+# 10. Display the Plot.
+
+## Rename.
+injuries["Victima"] = injuries["Victima"].replace({
+    "MIXTO": "Mix",
+    "TAXI": "Taxi",
+    "UTILITARIO": "Utilitarian",
+    "MONOPATIN": "Skateboard",
+    "CAMION": "Truck",
+    "OTRO": "Other",
+    "MOVIL": "Moving Object",
+    "CAMIONETA": "Pick-Up",
+    "TRANSPORTE PUBLICO": "Public Transport",
+    "MOTO": "Motorcycle",
+    "PEATON": "Pedestrian",
+    "SD": "Unknown",
+    "AUTO": "Car",
+    "CICLISTA": "Bicycle"
+})
+
+## Display.
+plt.show()
+
+' 10. Heatmap of DataFrame "homicides", Numeric Columns ' # to visualize correlation between Continuous (numeric) variables.
+
+# 1. Create the Heatmap structure.
+
+## Import Library.
+from matplotlib.colors import LinearSegmentedColormap
+
+## Define a custom color map for correlation intensity.
+cmap_cust = LinearSegmentedColormap.from_list(
+    "correlation_scale",
+    ["#99FFEB", "#00FFC1", "#009974"]
+)
+
+## Generate the heatmap using the correlation matrix.
+sns.heatmap(
+    homicides.corr(numeric_only=True),
+    annot=True,
+    cmap=cmap_cust,
+    vmin=-1,
+    vmax=1,
+    center=0
+)
+
+# 2. Create the Title.
+plt.title("Deaths Correlation Matrix", fontsize=12.5, fontweight="bold", fontname="Century Gothic")
+
+# 3. Display the Plot.
+
+## Rename.
+homicides.rename(columns={"Nº Víctimas": "Nº Victims", "Comuna": "Commune", "Victima_Code": "Victim Type"}, inplace=True)
+
+## Display.
 plt.show()
