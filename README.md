@@ -73,5 +73,4 @@
 
 #### 3. 9. Pie Chart of DataFrame "homicides", Column "Acusado" # to visualize proportion of Categorical values.
 
-<img width="690" height="575" alt="9" src="https://github.com/user-attachments/assets/abded251-ff6d-49fa-8082-37c728de0ca8" />
-
+<img width="690" height="575" alt="9" src="https://github.com/user-attachments/assets/62c4528b-93bf-4f57-b422-ccf765b8e39b" />
