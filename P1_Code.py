@@ -501,3 +501,93 @@ homicides.rename(columns={"Nº Víctimas": "Nº Victims", "Comuna": "Commune", "
 
 ## Display.
 plt.show()
+
+' 11. Heatmap of DataFrame "injuries", Numeric Columns ' # to visualize correlation between Continuous (numeric) variables.
+
+# 1. Create the Heatmap structure.
+
+## Define a custom color map for correlation intensity.
+cmap_cust = LinearSegmentedColormap.from_list(
+    "correlation_scale",
+    ["#99FFEB", "#00FFC1", "#009974"]
+)
+
+## Generate the heatmap using the correlation matrix.
+sns.heatmap(
+    injuries.corr(numeric_only=True),
+    annot=True,
+    cmap=cmap_cust,
+    vmin=-1,
+    vmax=1,
+    center=0
+)
+
+# 2. Create the Title
+plt.title("Injuries Correlation Matrix", fontsize=12.5, fontweight="bold", fontname="Century Gothic")
+
+# 3. Display the Plot
+
+## Rename.
+injuries.rename(columns={"Nº Victimas": "Nº Victims", "Altura": "Commune", "Victima_Code": "Victim Type"}, inplace=True)
+
+## Display.
+plt.show()
+
+' 12. Pie Chart of DataFrame "homicides", Column "Acusado" ' # to visualize proportion of Categorical values.
+
+# 1. Filter and count Categorical values.
+counts = homicides.loc[
+    ~homicides["Acusado"].isin(["SD", "PASAJEROS"]),
+    "Acusado"
+].value_counts()
+
+# 2. Select top "4" Categories and group the Rest as "Other".
+counts_plot = counts.head(4)
+rest = counts.iloc[4:].sum()
+if rest: counts_plot["Other"] = rest
+
+# 3. Assing a color and rename each Category.
+
+## Color.
+color_map = {
+    "AUTO": "#009974",
+    "CARGAS": "#00CC9A",
+    "OBJETO FIJO": "#00FFC1",
+    "MOTO": "#33FFD0",
+    "Other": "#66FFDE",
+}
+colors = [color_map.get(cat, "#CCCCCC") for cat in counts_plot.index]
+
+## Rename.
+label_map = {
+    "AUTO": "Car",
+    "CARGAS": "Cargo",
+    "OBJETO FIJO": "Fixed Object",
+    "MOTO": "Motorcycle",
+    "Other": "Other",
+}
+labels = [label_map.get(cat, cat) for cat in counts_plot.index]
+
+# 4. Create the Pie Chart structure.
+fig, ax = plt.subplots(figsize=(7, 7))
+wedges, *_ = ax.pie(
+    counts_plot,
+    autopct="%1.01f%%",
+    startangle=90,
+    colors=colors,
+    wedgeprops=dict(edgecolor="white", linewidth=1),
+    pctdistance=0.50
+)
+
+# 5. Set Title and enforce circular aspect.
+plt.title("Perpetrators", fontsize=12.5, fontweight="bold", fontname="Century Gothic", y=0.95) # move title upward)
+ax.set_aspect("equal")
+
+# 6. Add legend mapping slices to categories.
+ax.legend(wedges, labels, title="Accused", loc="center left", bbox_to_anchor=(0.95, 0.5), frameon=False)
+
+# 7. Adjust layout spacing.
+plt.tight_layout()
+
+# 8. Display.
+plt.show()
