@@ -1,6 +1,10 @@
 **<h1>Mitigate Road Accidents</h1>**
 
+## **Introduction**
+
 Video: https://www.tiktok.com/@mattfintech/video/7589456808859798798
+
+## **Mind Map**
 
 ├── 1. Problem (Business Problem)
 
